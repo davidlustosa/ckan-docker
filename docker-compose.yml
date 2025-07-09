@@ -14,7 +14,7 @@ services:
     networks:
       - webnet
       - ckannet
-      - web
+      - easypanel
     depends_on:
       ckan:
         condition: service_healthy
@@ -39,6 +39,7 @@ services:
       - dbnet
       - solrnet
       - redisnet
+      - easypanel
     env_file:
       - .env
     depends_on:
@@ -63,6 +64,7 @@ services:
     networks:
       - ckannet
       - dbnet
+      - easypanel
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
     restart: unless-stopped
     healthcheck:
@@ -76,6 +78,7 @@ services:
       context: postgresql/
     networks:
       - dbnet
+      - easypanel
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -95,6 +98,7 @@ services:
   solr:
     networks:
       - solrnet
+      - easypanel
     image: ckan/ckan-solr:${SOLR_IMAGE_VERSION}
     volumes:
       - solr_data:/var/solr
