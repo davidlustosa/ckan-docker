@@ -14,11 +14,19 @@ services:
     networks:
       - webnet
       - ckannet
+      - web
     depends_on:
       ckan:
         condition: service_healthy
     ports:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ckan.rule=Host(`ckan.davidlustosa.com.br`)"
+      - "traefik.http.routers.ckan.entrypoints=websecure"
+      - "traefik.http.routers.ckan.tls.certresolver=letsencrypt"
+      - "traefik.http.services.ckan.loadbalancer.server.port=8443"
+
     
   ckan:
     build:
